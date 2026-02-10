@@ -962,6 +962,214 @@ body.dark .exam-box.fancy{
 }
 
 
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px){
+
+  body{
+    padding:8px;
+  }
+
+  /* NAVBAR */
+  .navbar{
+    padding:12px 14px;
+    flex-wrap:wrap;
+  }
+
+  .nav-logo{
+    font-size:18px;
+  }
+
+  .nav-links{
+    width:100%;
+    justify-content:space-around;
+    gap:10px;
+    margin-top:10px;
+  }
+
+  .nav-links li{
+    font-size:14px;
+  }
+
+  .dark-btn{
+    width:34px;
+    height:34px;
+    font-size:16px;
+  }
+}
+
+
+
+
+
+@media (max-width: 768px){
+
+  .home-box{
+    gap:18px;
+  }
+
+  .exam-box,
+  .exam-box.fancy{
+    width:100%;
+    max-width:320px;
+    height:150px;
+  }
+
+  .exam-title{
+    font-size:20px;
+  }
+
+  .exam-icon{
+    font-size:36px;
+  }
+}
+
+
+
+@media (max-width: 768px){
+
+  .exam-layout{
+    flex-direction:column;
+  }
+
+  #palette{
+    width:100%;
+    grid-template-columns:repeat(5,1fr);
+    margin-bottom:12px;
+  }
+
+  .p-btn{
+    padding:8px 0;
+    font-size:14px;
+  }
+
+  .q-card{
+    padding:16px;
+  }
+
+  .question{
+    font-size:18px;
+  }
+
+  .option{
+    padding:12px;
+    font-size:15px;
+  }
+}
+
+
+
+@media (max-width: 768px){
+  .btn-box{
+    flex-direction:column;
+  }
+
+  .btn{
+    font-size:16px;
+    padding:16px;
+  }
+}
+
+
+
+
+@media (max-width: 600px){
+
+  .result-summary{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .home-btn-pro{
+    padding:14px 24px;
+    font-size:15px;
+  }
+}
+
+
+
+
+/* ================= FINAL MOBILE OVERRIDES ================= */
+@media (max-width: 768px){
+
+  /* GENERAL */
+  body{
+    padding:8px;
+  }
+
+  h2{font-size:22px;}
+  h3{font-size:18px;}
+
+  /* NAVBAR */
+  .navbar{
+    padding:10px 12px;
+  }
+
+  .nav-links{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+  }
+
+  .nav-links li{
+    font-size:14px;
+  }
+
+  /* HOME BOX */
+  .home-box{
+    flex-direction:column !important;
+    align-items:center;
+  }
+
+  .exam-box,
+  .exam-box.fancy{
+    width:100% !important;
+    max-width:320px;
+  }
+
+  /* STATS */
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  /* EXAM PAGE */
+  .exam-layout{
+    flex-direction:column;
+  }
+
+  #palette{
+    width:100%;
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .p-btn{
+    font-size:13px;
+    padding:8px 0;
+  }
+
+  .btn-box{
+    flex-direction:column;
+  }
+
+  .btn{
+    padding:15px;
+    font-size:16px;
+  }
+
+  /* RESULT */
+  .result-summary{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+
+
+
+
+
+
+
+
 </style>
 </head>
 
@@ -1738,6 +1946,10 @@ function filterResult(type){
 
   document.getElementById("answerList").innerHTML = html || "<p>No questions found</p>";
 }
+
+
+
+
 </script>
 
 
