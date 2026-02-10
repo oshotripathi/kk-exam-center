@@ -1164,7 +1164,126 @@ body.dark .exam-box.fancy{
 
 
 
+/* ================= MOBILE SCREEN PERFECT ALIGN ================= */
+@media (max-width: 768px){
 
+  /* Screen safety */
+  *{
+    box-sizing:border-box;
+    max-width:100%;
+  }
+
+  html, body{
+    width:100%;
+    overflow-x:hidden;
+  }
+
+  body{
+    padding:6px;
+  }
+
+  /* TEXT AUTO SCALE */
+  .title{
+    font-size:30px;
+    line-height:1.2;
+  }
+
+  .sub{
+    font-size:15px;
+  }
+
+  /* NAVBAR FIX */
+  .navbar{
+    width:100%;
+    padding:10px 12px;
+  }
+
+  .nav-links{
+    width:100%;
+    justify-content:space-between;
+  }
+
+  /* HOME BOXES FULL WIDTH */
+  .home-box{
+    width:100%;
+    margin:0 auto;
+  }
+
+  .exam-box,
+  .exam-box.fancy{
+    width:100% !important;
+    max-width:100%;
+    margin:0 auto;
+  }
+
+  /* STATS FULL FIT */
+  .stats{
+    width:100%;
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .stats div{
+    padding:14px 8px;
+  }
+
+  /* INFO CARDS */
+  .info-cards{
+    width:100%;
+    padding:0 4px;
+  }
+
+  /* EXAM PAGE */
+  .exam-layout{
+    width:100%;
+    margin:0;
+  }
+
+  .q-card{
+    width:100%;
+    padding:14px;
+  }
+
+  .question{
+    font-size:17px;
+  }
+
+  .option{
+    width:100%;
+  }
+
+  /* PALETTE FIX */
+  #palette{
+    width:100%;
+    margin:0 auto 10px;
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  /* BUTTONS */
+  .btn-box{
+    width:100%;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  /* RESULT PAGE */
+  .result-wrap{
+    width:100%;
+    padding:0 6px;
+  }
+
+  .score-card{
+    width:100%;
+  }
+
+  /* POPUP */
+  .popup-content{
+    width:92%;
+    max-width:360px;
+  }
+
+}
 
 
 
@@ -1955,3 +2074,4 @@ function filterResult(type){
 
 </body>
 </html>
+
