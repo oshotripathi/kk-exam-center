@@ -1545,9 +1545,62 @@ body.dark .exam-box.fancy{
 
 
 
-    
+  /* ================= FIX HOME EXAM BOX HIDDEN (MOBILE) ================= */
+@media (max-width: 768px){
 
-    
+  /* FORCE HOME SECTION VISIBLE */
+  #home{
+    display:block !important;
+    visibility:visible !important;
+  }
+
+  /* HOME BOX CONTAINER */
+  .home-box{
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    width:100% !important;
+  }
+
+  /* 🔥 SSC / LEKHPAL BOX FIX */
+  .exam-box,
+  .exam-box.fancy{
+    display:flex !important;
+    opacity:1 !important;
+    visibility:visible !important;
+
+    width:100% !important;
+    max-width:340px !important;
+    min-height:170px !important;   /* ⭐ THIS WAS MISSING */
+
+    margin:12px auto !important;
+    transform:none !important;
+  }
+
+  /* SHINE EFFECT SAFE */
+  .exam-box.fancy::before{
+    inset:-60% !important;
+  }
+
+}  
+
+   @media (max-width:768px){
+
+  /* Global thoda kam */
+  html{
+    font-size: 19px !important;
+  }
+
+  /* 🔥 Exam question ko priority */
+  .question{
+    font-size: 1.45rem !important;
+  }
+
+  /* Options balance */
+  .option{
+    font-size: 1.1rem !important;
+  }
+} 
 
 </style>
 </head>
@@ -2334,6 +2387,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
