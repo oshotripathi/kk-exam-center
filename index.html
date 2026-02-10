@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>KK Exam Center</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <style>
 body{
@@ -1492,6 +1492,61 @@ body.dark .exam-box.fancy{
 
 
 
+/* ================= FORCE BIG TEXT (MOBILE) ================= */
+@media (max-width: 768px){
+
+  html{
+    font-size: 22px !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+  }
+
+  body{
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+
+  /* HOME */
+  .title{font-size: 2.4rem !important;}
+  .sub{font-size: 1.2rem !important;}
+  .exam-title{font-size: 1.4rem !important;}
+  .exam-sub{font-size: 1.1rem !important;}
+
+  /* STATS */
+  .stats h2{font-size: 1.9rem !important;}
+  .stats p{font-size: 1.1rem !important;}
+
+  /* 🔥 EXAM (MAIN ISSUE) */
+  .question{
+    font-size: 1.8rem !important;   /* ~40px */
+    line-height: 1.8 !important;
+    font-weight: 800 !important;
+  }
+
+  .option{
+    font-size: 1.25rem !important;
+    padding: 18px !important;
+  }
+
+  .timer{
+    font-size: 1.3rem !important;
+  }
+
+  /* BUTTONS */
+  .btn{
+    font-size: 1.25rem !important;
+    padding: 20px !important;
+  }
+
+  /* RESULT */
+  .score-card h1{font-size: 2.4rem !important;}
+  .answer-box{font-size: 1.2rem !important;}
+}
+
+
+
+    
+
     
 
 </style>
@@ -2279,6 +2334,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
