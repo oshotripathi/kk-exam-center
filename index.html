@@ -22,7 +22,7 @@ body{
     font-family:"Segoe UI",Arial,sans-serif;
     background:linear-gradient(135deg,#eef2f3,#d9e4f5);
     padding:16px;
-    user-select:none;
+
 }
 
 
@@ -1643,6 +1643,7 @@ body.dark .exam-box.fancy{
     <li onclick="goHome()">Home</li>
     <li onclick="openAbout()">About</li>
     <li onclick="openContact()">Contact Us</li>
+    <li onclick="openPrivacy()">Privacy Policy</li>
   </ul>
 
   <!-- 🌙 Dark Mode Button (RIGHT SIDE) -->
@@ -1891,6 +1892,17 @@ console.log("DATA LOADED", data);
 
 
 
+
+function openPrivacy(){
+  if(examRunning){
+    alert("❌ Exam ke dauran Privacy Policy open nahi ho sakti");
+    return;
+  }
+  location.href = "privacy.html";
+}
+
+
+    
 
 
 
@@ -2406,6 +2418,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
