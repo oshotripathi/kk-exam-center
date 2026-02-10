@@ -1285,7 +1285,89 @@ body.dark .exam-box.fancy{
 
 }
 
+/* ================= MOBILE TEXT SIZE FIX ================= */
+@media (max-width: 768px){
 
+  /* 🔒 Stop browser text shrinking */
+  html{
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-size: 18px;   /* ⭐ base font boost */
+  }
+
+  body{
+    font-size: 1rem;  /* = 18px */
+    line-height: 1.5;
+  }
+
+  /* ===== HOME PAGE TEXT ===== */
+  .title{
+    font-size: 2rem;      /* ~36px */
+    line-height: 1.25;
+  }
+
+  .sub{
+    font-size: 1rem;      /* ~18px */
+  }
+
+  .exam-title{
+    font-size: 1.25rem;   /* ~22px */
+  }
+
+  .exam-sub{
+    font-size: 0.95rem;
+  }
+
+  /* ===== STATS ===== */
+  .stats h2{
+    font-size: 1.6rem;
+  }
+
+  .stats p{
+    font-size: 0.9rem;
+  }
+
+  /* ================= EXAM PAGE (MOST IMPORTANT) ================= */
+
+  /* Question number */
+  #qNo{
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  /* 🔥 MAIN QUESTION TEXT */
+  .question{
+    font-size: 1.35rem;   /* ⭐ ~24px */
+    line-height: 1.6;
+    font-weight: 600;
+  }
+
+  /* Options */
+  .option{
+    font-size: 1.05rem;   /* ~19px */
+    line-height: 1.4;
+  }
+
+  /* Palette numbers */
+  .p-btn{
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  /* Buttons */
+  .btn{
+    font-size: 1.05rem;
+  }
+
+  /* ===== RESULT PAGE ===== */
+  .score-card h1{
+    font-size: 2rem;
+  }
+
+  .answer-box{
+    font-size: 1rem;
+  }
+}
 
 
 
@@ -2074,4 +2156,5 @@ function filterResult(type){
 
 </body>
 </html>
+
 
