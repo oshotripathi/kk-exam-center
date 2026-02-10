@@ -1549,10 +1549,7 @@ body.dark .exam-box.fancy{
 @media (max-width: 768px){
 
   /* FORCE HOME SECTION VISIBLE */
-  #home{
-    display:block !important;
-    visibility:visible !important;
-  }
+/* #home{ display:block !important; } */
 
   /* HOME BOX CONTAINER */
   .home-box{
@@ -2000,10 +1997,11 @@ window.onbeforeunload = function () {
 /* ================= BASIC NAV ================= */
 function goHome(){
   if(examRunning){
-    alert("❌ Exam chal raha hai, Home open nahi ho sakta");
+    alert("❌ Exam chal raha hai");
     return;
   }
-  location.reload();
+  hideAll();
+  home.style.display = "block";
 }
 
 function openAbout(){
@@ -2012,7 +2010,7 @@ function openAbout(){
     return;
   }
   hideAll();
-  document.getElementById("aboutPage").style.display="block";
+  document.getElementById("aboutPage").style.display = "block";
 }
 
 function openContact(){
@@ -2025,14 +2023,15 @@ function openContact(){
 }
 
 function hideAll(){
-  home.style.display="none";
-  exam.style.display="none";
-  chapterPage.style.display="none";
-  lekhpalChapterPage.style.display="none";
-  resultPage.style.display="none";
-  rulePopup.style.display="none";
-  document.getElementById("aboutPage").style.display="none";
-  document.getElementById("contactPage").style.display="none";
+  home.style.display = "none";
+  exam.style.display = "none";
+  chapterPage.style.display = "none";
+  lekhpalChapterPage.style.display = "none";
+  resultPage.style.display = "none";
+  rulePopup.style.display = "none";
+
+  document.getElementById("aboutPage").style.display = "none";
+  document.getElementById("contactPage").style.display = "none";
 }
 
 /* ================= DARK MODE ================= */
@@ -2387,6 +2386,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
