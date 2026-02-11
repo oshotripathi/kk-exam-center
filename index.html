@@ -1666,6 +1666,7 @@ body.dark .about-section{
     <li onclick="openAbout()">About</li>
     <li onclick="openContact()">Contact Us</li>
     <li onclick="openPrivacy()">Privacy Policy</li>
+      <li onclick="openAdmin()">Admin</li>
   </ul>
 
   <!-- 🌙 Dark Mode Button (RIGHT SIDE) -->
@@ -1942,58 +1943,23 @@ function openPrivacy(){
 }
 
 
+
+
+function openAdmin(){
+  window.location.href = "admin.html";
+}
+
+
     
 
 
 
-function adminLogin(){
-
-  const u = document.getElementById("adminUser").value;
-  const p = document.getElementById("adminPass").value;
-
-  if(u === "admin" && p === "1234"){
-    localStorage.setItem("admin","yes");
-    document.getElementById("adminLogin").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-  }else{
-    document.getElementById("adminMsg").innerText = "❌ Invalid Admin Login";
-  }
-}
-
-function adminLogout(){
-  localStorage.removeItem("admin");
-  location.reload();
-}
 
 
 
 
-function addQuestion(){
 
-  const ch = document.getElementById("qeChapter").value;
 
-  const q = document.getElementById("qeQuestion").value;
-  const o = [
-    op0.value,
-    op1.value,
-    op2.value,
-    op3.value
-  ];
-  const a = parseInt(document.getElementById("qeAnswer").value);
-
-  if(!q || o.some(x => x === "")){
-    alert("Fill all fields");
-    return;
-  }
-
-  adminQuestions[ch].push({ q, o, a });
-
-  localStorage.setItem("questions", JSON.stringify(adminQuestions));
-
-  alert("✅ Question saved");
-
-  qeQuestion.value = op0.value = op1.value = op2.value = op3.value = "";
-}
 
 
 
@@ -2458,6 +2424,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
