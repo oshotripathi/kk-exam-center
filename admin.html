@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KK Admin Panel</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Segoe UI;
+  background:#f4f6fb;
+  padding:20px;
+  transition:.3s;
+}
+body.dark{background:#121212;color:#fff;}
+
+.container{
+  max-width:900px;
+  margin:auto;
+}
+
+.card{
+  background:#fff;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  margin-bottom:20px;
+}
+body.dark .card{background:#1e1e1e;}
+
+input,select{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+button{
+  padding:10px 15px;
+  background:#2c3e50;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  margin:5px 0;
+}
+
+.chapter{
+  padding:12px;
+  background:#ecf0f1;
+  margin:6px 0;
+  border-radius:8px;
+  cursor:pointer;
+}
+body.dark .chapter{background:#333;}
+
+.q-item{
+  background:#fafafa;
+  padding:10px;
+  margin:6px 0;
+  border-radius:6px;
+}
+body.dark .q-item{background:#2a2a2a;}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.toggle{
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="topbar">
+  <h2>KK Admin Panel</h2>
+  <div>
+    <span class="toggle" onclick="toggleDark()">🌙</span>
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="card" id="loginBox">
+  <h3>Admin Login</h3>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="loginMsg"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none">
+
+  <div class="card">
+    <h3>All Chapters</h3>
+    <div id="chapterList"></div>
+  </div>
+
+  <div class="card">
+    <h3 id="selectedChapterTitle"></h3>
+    <div id="questionList"></div>
+  </div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getFirestore, collection, getDocs, 
+  deleteDoc, doc, updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { 
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+/* LOGIN */
+window.login = async function(){
+  try{
+    await signInWithEmailAndPassword(auth,email.value,password.value);
+  }catch(e){
+    loginMsg.innerText="❌ Login Failed";
+  }
+};
+
+/* AUTH CHECK */
+onAuthStateChanged(auth,(user)=>{
+  if(user){
+    loginBox.style.display="none";
+    dashboard.style.display="block";
+    loadChapters();
+  }else{
+    loginBox.style.display="block";
+    dashboard.style.display="none";
+  }
+});
+
+/* LOGOUT */
+window.logout = async function(){
+  await signOut(auth);
+};
+
+/* LOAD CHAPTERS */
+async function loadChapters(){
+  const snapshot = await getDocs(collection(db,"questions"));
+  let chapters = new Set();
+
+  snapshot.forEach(doc=>{
+    chapters.add(doc.data().chapter);
+  });
+
+  chapterList.innerHTML="";
+  chapters.forEach(ch=>{
+    chapterList.innerHTML += 
+      `<div class="chapter" onclick="loadQuestions('${ch}')">${ch}</div>`;
+  });
+}
+
+/* LOAD QUESTIONS */
+window.loadQuestions = async function(chapter){
+
+  selectedChapterTitle.innerText = chapter;
+
+  const snapshot = await getDocs(collection(db,"questions"));
+  questionList.innerHTML="";
+
+  snapshot.forEach(d=>{
+    let data = d.data();
+    if(data.chapter === chapter){
+
+      questionList.innerHTML += `
+      <div class="q-item">
+        <b>${data.question}</b><br>
+        <button onclick="editQuestion('${d.id}','${data.question}')">Edit</button>
+        <button onclick="deleteQuestion('${d.id}')">Delete</button>
+      </div>
+      `;
+    }
+  });
+};
+
+/* DELETE */
+window.deleteQuestion = async function(id){
+  await deleteDoc(doc(db,"questions",id));
+  loadChapters();
+  questionList.innerHTML="";
+};
+
+/* EDIT */
+window.editQuestion = async function(id,oldQ){
+  let newQ = prompt("Edit Question:",oldQ);
+  if(newQ){
+    await updateDoc(doc(db,"questions",id),{
+      question:newQ
+    });
+    loadQuestions(selectedChapterTitle.innerText);
+  }
+};
+
+</script>
+
+<script>
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
