@@ -19,77 +19,23 @@ const firebaseConfig = {
   projectId: "kk-exam-center",
   storageBucket: "kk-exam-center.firebasestorage.app",
   messagingSenderId: "960789555084",
-  appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9",
-  measurementId: "G-YHTHGDR7Q2"
+  appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
-/* ================= DATA ================= */
-
+/* ✅ SAMPLE STRUCTURE – पहले इसे test करो */
 const data = {
   ssc: {
-    maths: {  
-      
-         percentage: {
-
-         hi: [
-          // 👇 यहाँ यह पूरा block paste करना है
-          {q:"150 का 20% कितना है?",o:["25","30","35","40"],a:1},
-          {q:"80 का 25% कितना है?",o:["15","18","20","22"],a:2},
-          ...
-        ],
-
-        en: [
-          // English questions यहाँ
-        ]
-
-      },
+    maths: {
 
       ratio: {
         hi: [
-          {q:"2:3 का योग 25 है, संख्याएँ क्या हैं?",o:["10,15","8,12","12,13","9,16"],a:0}
+          {q:"2:3 का योग 25 है, संख्याएँ?",o:["10,15","8,12","12,13","9,16"],a:0}
         ],
         en: [
-          {q:"Ratio 2:3, sum is 25. Find numbers?",o:["10,15","8,12","12,13","9,16"],a:0}
-        ]
-      },
-
-      profitloss: {
-        hi: [
-          {q:"CP=100 और लाभ 20% है, SP कितना होगा?",o:["110","115","120","125"],a:2}
-        ],
-        en: [
-          {q:"CP=100 and profit 20%, find SP?",o:["110","115","120","125"],a:2}
-        ]
-      },
-
-      average: {
-        hi: [
-          {q:"10, 20, 30 का औसत कितना है?",o:["15","18","20","22"],a:2}
-        ],
-        en: [
-          {q:"Average of 10, 20, 30?",o:["15","18","20","22"],a:2}
-        ]
-      },
-
-      timework: {
-        hi: [
-          {q:"A 10 दिन में काम करता है, B 15 दिन में। साथ में कितने दिन?",o:["5","6","7","8"],a:1}
-        ],
-        en: [
-          {q:"A can do work in 10 days, B in 15 days. Together?",o:["5","6","7","8"],a:1}
-        ]
-      },
-
-      speed: {
-        hi: [
-          {q:"60 km/h की गति से 2 घंटे में दूरी?",o:["100","110","120","130"],a:2}
-        ],
-        en: [
-          {q:"Distance at 60 km/h for 2 hours?",o:["100","110","120","130"],a:2}
+          {q:"Ratio 2:3, sum 25. Numbers?",o:["10,15","8,12","12,13","9,16"],a:0}
         ]
       }
 
@@ -97,9 +43,7 @@ const data = {
   }
 };
 
-
-/* ================= UPLOAD FUNCTION ================= */
-
+/* 🔥 SAFE UPLOAD FUNCTION */
 window.uploadAll = async function () {
 
   try {
@@ -128,14 +72,16 @@ window.uploadAll = async function () {
           });
 
         }
+
       }
+
     }
 
-    alert("🔥 All Questions Uploaded Successfully 🔥");
+    alert("🔥 Upload Successful 🔥");
 
   } catch (error) {
-    console.error(error);
-    alert("Error आया है — Console check करो");
+    console.error("Upload Error:", error);
+    alert("Error check console");
   }
 
 };
