@@ -73,6 +73,28 @@ body.dark .q-item{background:#2a2a2a;}
 .toggle{
   cursor:pointer;
 }
+
+.q-item{
+  padding:15px;
+  background:#f5f5f5;
+  margin-bottom:15px;
+  border-radius:10px;
+}
+
+.q-item ul{
+  margin:10px 0;
+  padding-left:20px;
+}
+
+.correct{
+  background:green;
+  color:white;
+  font-weight:bold;
+  padding:3px 6px;
+  border-radius:5px;
+}
+
+  
 </style>
 </head>
 <body>
@@ -126,14 +148,14 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCGqcunQhA9qXge7_nWZfIMWDQczs5OUBY",
-    authDomain: "kk-exam-center.firebaseapp.com",
-    projectId: "kk-exam-center",
-    storageBucket: "kk-exam-center.firebasestorage.app",
-    messagingSenderId: "960789555084",
-    appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9",
-    measurementId: "G-YHTHGDR7Q2"
-  };
+  apiKey: "AIzaSyCGqcunQhA9qXge7_nWZfIMWDQczs5OUBY",
+  authDomain: "kk-exam-center.firebaseapp.com",
+  projectId: "kk-exam-center",
+  storageBucket: "kk-exam-center.firebasestorage.app",
+  messagingSenderId: "960789555084",
+  appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9",
+  measurementId: "G-YHTHGDR7Q2"
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -181,7 +203,7 @@ async function loadChapters(){
   });
 }
 
-/* LOAD QUESTIONS */
+/* LOAD QUESTIONS WITH OPTIONS */
 window.loadQuestions = async function(chapter){
 
   selectedChapterTitle.innerText = chapter;
@@ -191,14 +213,24 @@ window.loadQuestions = async function(chapter){
 
   snapshot.forEach(d=>{
     let data = d.data();
+
     if(data.chapter === chapter){
 
       questionList.innerHTML += `
       <div class="q-item">
-        <b>${data.question}</b><br>
+        <b>${data.question}</b>
+
+        <ul>
+          <li class="${data.answer===0?'correct':''}">${data.option1}</li>
+          <li class="${data.answer===1?'correct':''}">${data.option2}</li>
+          <li class="${data.answer===2?'correct':''}">${data.option3}</li>
+          <li class="${data.answer===3?'correct':''}">${data.option4}</li>
+        </ul>
+
         <button onclick="editQuestion('${d.id}','${data.question}')">Edit</button>
         <button onclick="deleteQuestion('${d.id}')">Delete</button>
       </div>
+      <hr>
       `;
     }
   });
@@ -207,8 +239,7 @@ window.loadQuestions = async function(chapter){
 /* DELETE */
 window.deleteQuestion = async function(id){
   await deleteDoc(doc(db,"questions",id));
-  loadChapters();
-  questionList.innerHTML="";
+  loadQuestions(selectedChapterTitle.innerText);
 };
 
 /* EDIT */
@@ -222,12 +253,6 @@ window.editQuestion = async function(id,oldQ){
   }
 };
 
-</script>
-
-<script>
-function toggleDark(){
-  document.body.classList.toggle("dark");
-}
 </script>
 
 </body>
