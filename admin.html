@@ -227,7 +227,7 @@ window.loadQuestions = async function(chapter){
           <li class="${data.answer===3?'correct':''}">${data.option4}</li>
         </ul>
 
-        <button onclick="editQuestion('${d.id}','${data.question}')">Edit</button>
+        <button onclick="editQuestion('${d.id}')">Edit</button>
         <button onclick="deleteQuestion('${d.id}')">Delete</button>
       </div>
       <hr>
@@ -243,17 +243,55 @@ window.deleteQuestion = async function(id){
 };
 
 /* EDIT */
-window.editQuestion = async function(id,oldQ){
-  let newQ = prompt("Edit Question:",oldQ);
-  if(newQ){
-    await updateDoc(doc(db,"questions",id),{
-      question:newQ
-    });
-    loadQuestions(selectedChapterTitle.innerText);
-  }
+window.editQuestion = async function(id){
+
+  const snapshot = await getDocs(collection(db,"questions"));
+  let questionData = null;
+
+  snapshot.forEach(d=>{
+    if(d.id === id){
+      questionData = d.data();
+    }
+  });
+
+  if(!questionData) return;
+
+  let newQ = prompt("Edit Question:", questionData.question);
+  if(newQ === null) return;
+
+  let opt1 = prompt("Option 1:", questionData.option1);
+  if(opt1 === null) return;
+
+  let opt2 = prompt("Option 2:", questionData.option2);
+  if(opt2 === null) return;
+
+  let opt3 = prompt("Option 3:", questionData.option3);
+  if(opt3 === null) return;
+
+  let opt4 = prompt("Option 4:", questionData.option4);
+  if(opt4 === null) return;
+
+  let ans = prompt("Correct Answer Index (0-3):", questionData.answer);
+  if(ans === null) return;
+
+  await updateDoc(doc(db,"questions",id),{
+    question:newQ,
+    option1:opt1,
+    option2:opt2,
+    option3:opt3,
+    option4:opt4,
+    answer:Number(ans)
+  });
+
+  alert("✅ Updated Successfully");
+
+  loadQuestions(selectedChapterTitle.innerText);
 };
-
 </script>
-
+<script>
+function toggleDark(){
+  document.body.classList.toggle("dark");
+}
+</script>
 </body>
 </html>
