@@ -2382,7 +2382,13 @@ window.renderPalette = function(){
     let cls = "p-btn p-unattempted";
     if(userAnswers[i]!=null) cls="p-btn p-attempted";
     if(i===currentQ) cls="p-btn p-current";
-    p.innerHTML += `<div class="${cls}" onclick="currentQ=${i};loadQuestion();renderPalette()">${i+1}</div>`;
+   p.innerHTML += `
+  <div class="${cls}" 
+       onclick="window.currentQ=${i};
+                window.loadQuestion();
+                window.renderPalette()">
+       ${i+1}
+  </div>`;
   });
 }
 
@@ -2506,6 +2512,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
