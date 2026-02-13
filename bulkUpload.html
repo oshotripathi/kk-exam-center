@@ -55,16 +55,58 @@ const data = {
 window.uploadAll = async function () {
   try {
 
-    const maths = data.ssc.maths;
+    /* ======================
+       🔥 SSC UPLOAD
+    ====================== */
 
-    for (let chapter in maths) {
-      const chapterData = maths[chapter];
+    for (let subject in data.ssc) {
+
+      for (let chapter in data.ssc[subject]) {
+
+        const chapterData = data.ssc[subject][chapter];
+
+        for (let lang in chapterData) {
+
+          const questionsArray = chapterData[lang];
+
+          for (let q of questionsArray) {
+
+            await addDoc(collection(db, "questions"), {
+              category: "ssc",          // ✅ VERY IMPORTANT
+              subject: subject,         // maths
+              chapter: chapter,
+              language: lang,
+              question: q.q,
+              option1: q.o[0],
+              option2: q.o[1],
+              option3: q.o[2],
+              option4: q.o[3],
+              answer: q.a
+            });
+
+          }
+        }
+      }
+    }
+
+
+    /* ======================
+       🔥 LEKHPAL UPLOAD
+    ====================== */
+
+    for (let chapter in data.lekhpal) {
+
+      const chapterData = data.lekhpal[chapter];
 
       for (let lang in chapterData) {
+
         const questionsArray = chapterData[lang];
 
         for (let q of questionsArray) {
+
           await addDoc(collection(db, "questions"), {
+            category: "lekhpal",     // ✅ VERY IMPORTANT
+            subject: "general",
             chapter: chapter,
             language: lang,
             question: q.q,
@@ -74,11 +116,12 @@ window.uploadAll = async function () {
             option4: q.o[3],
             answer: q.a
           });
+
         }
       }
     }
 
-    alert("🔥 Upload Successful 🔥");
+    alert("🔥 SSC + Lekhpal Upload Successful 🔥");
 
   } catch (error) {
     console.error("Upload Error:", error);
