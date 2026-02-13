@@ -26,6 +26,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 /* ✅ SAMPLE STRUCTURE – पहले इसे test करो */
+
+
+
 const data = {
 
   ssc: {
@@ -36,8 +39,17 @@ const data = {
       }
 
     }
+  },
+
+  lekhpal: {
+
+    grammar:{ hi:[], en:[ {q:"He ___ playing now.",o:["is","are","was","were"],a:0}, {q:"She ___ gone to school.",o:["has","have","had","is"],a:0}, {q:"I ___ a book yesterday.",o:["read","reads","reading","will read"],a:0}, {q:"They ___ football daily.",o:["play","plays","played","playing"],a:0}, {q:"Ram ___ taller than Shyam.",o:["is","are","was","were"],a:0}, {q:"She ___ finished her work.",o:["has","have","had","will"],a:0}, {q:"We ___ waiting for you.",o:["are","is","was","were"],a:0}, {q:"He ___ not like coffee.",o:["does","do","did","done"],a:0}, {q:"I ___ in Delhi.",o:["live","lives","living","lived"],a:0}, {q:"They ___ already eaten.",o:["have","has","had","will"],a:0} ] }, vocabulary:{ hi:[], en:[ {q:"Synonym of Happy?",o:["Sad","Joyful","Angry","Weak"],a:1}, {q:"Antonym of Strong?",o:["Powerful","Weak","Brave","Bold"],a:1}, {q:"Meaning of Honest?",o:["Truthful","Clever","Lazy","Rude"],a:0}, {q:"Synonym of Fast?",o:["Quick","Slow","Late","Low"],a:0}, {q:"Antonym of Begin?",o:["Start","Open","End","Run"],a:2}, {q:"Meaning of Silent?",o:["Noisy","Quiet","Angry","Fast"],a:1}, {q:"Synonym of Brave?",o:["Coward","Bold","Fear","Lazy"],a:1}, {q:"Antonym of Old?",o:["Ancient","Young","Big","Tall"],a:1}, {q:"Meaning of Rich?",o:["Poor","Wealthy","Weak","Thin"],a:1}, {q:"Synonym of Easy?",o:["Hard","Simple","Difficult","Tough"],a:1} ] }, comprehension:{ hi:[], en:[ {q:"What is the main idea of a passage?",o:["Topic","Title","Meaning","Word"],a:0}, {q:"Meaning of comprehension?",o:["Understanding","Writing","Speaking","Reading"],a:0}, {q:"Answers are based on?",o:["Passage","Guess","Memory","Opinion"],a:0}, {q:"Comprehension tests?",o:["Understanding","Speed","Grammar","Spelling"],a:0}, {q:"Passage should be read?",o:["Carefully","Quickly","Skip","Ignore"],a:0}, {q:"Answers should be?",o:["Exact","Guess","Long","Random"],a:0}, {q:"Tone of passage usually?",o:["Neutral","Angry","Funny","Sad"],a:0}, {q:"Passage is about?",o:["Topic","Verb","Tense","Word"],a:0}, {q:"Comprehension helps in?",o:["Understanding","Speaking","Writing","Typing"],a:0}, {q:"Questions are based on?",o:["Text","Option","Title","Word"],a:0} ] }, error:{ hi:[], en:[ {q:"He go to school daily.",o:["He go","to school","daily","No error"],a:0}, {q:"She have a pen.",o:["She","have","a pen","No error"],a:1}, {q:"I is happy.",o:["I","is","happy","No error"],a:1}, {q:"They was late.",o:["They","was","late","No error"],a:1}, {q:"He don’t like tea.",o:["He","don’t","like tea","No error"],a:1}, {q:"She did not went home.",o:["did","not","went","No error"],a:2}, {q:"He are my friend.",o:["He","are","my friend","No error"],a:1}, {q:"We has finished.",o:["We","has","finished","No error"],a:1}, {q:"She do her work.",o:["She","do","her work","No error"],a:1}, {q:"They is playing.",o:["They","is","playing","No error"],a:1} ] }, sentence:{ hi:[], en:[ {q:"He is ___ honest man.",o:["a","an","the","no article"],a:1}, {q:"She is ___ best player.",o:["a","an","the","no article"],a:2}, {q:"I saw ___ elephant.",o:["a","an","the","no article"],a:1}, {q:"He ___ late yesterday.",o:["is","was","were","are"],a:1}, {q:"She speaks ___ English.",o:["good","well","better","best"],a:1}, {q:"He is fond ___ music.",o:["of","to","for","with"],a:0}, {q:"She is afraid ___ dogs.",o:["from","of","to","with"],a:1}, {q:"He succeeded ___ hard work.",o:["by","with","in","for"],a:0}, {q:"She prefers tea ___ coffee.",o:["than","to","with","over"],a:1}, {q:"He is good ___ maths.",o:["at","in","on","with"],a:0}
+      ]
+    }
+
   }
- };
+
+};
 
 /* 🔥 SAFE UPLOAD FUNCTION */
 window.uploadAll = async function () {
