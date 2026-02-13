@@ -1867,7 +1867,7 @@ const lekhpalChapterPage = document.getElementById("lekhpalChapterPage");
 let examType = "";
 let questions = [];
 let userAnswers = [];
-let currentQ = 0;
+window.currentQ = 0;
 let timeLeft = 900;
 let timerInt = null;
 let examRunning = false;
@@ -2512,6 +2512,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
