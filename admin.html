@@ -120,23 +120,22 @@ body.dark .q-item{background:#2a2a2a;}
 
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none">
+      <div id="categorySection"></div>
 
-  <div class="card">
-    <h3>All Chapters</h3>
-    <div id="chapterList"></div>
-  </div>
+<div id="chapterSection" style="display:none;"></div>
 
-  <div class="card">
-    <h3 id="selectedChapterTitle"></h3>
-    <div id="questionList"></div>
-  </div>
+<div id="questionSection" style="display:none;"></div>
+  
+
+  
 
 </div>
 
 </div>
 
 <script type="module">
-
+let selectedCategory = "";
+let selectedChapter = "";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getFirestore, collection, getDocs, 
@@ -175,7 +174,7 @@ onAuthStateChanged(auth,(user)=>{
   if(user){
     loginBox.style.display="none";
     dashboard.style.display="block";
-    loadChapters();
+    loadCategories();
   }else{
     loginBox.style.display="block";
     dashboard.style.display="none";
@@ -188,20 +187,123 @@ window.logout = async function(){
 };
 
 /* LOAD CHAPTERS */
-async function loadChapters(){
+function loadCategories(){
+
+  categorySection.style.display="block";
+  chapterSection.style.display="none";
+  questionSection.style.display="none";
+
+  categorySection.innerHTML = `
+    <div class="chapter" onclick="openCategory('ssc')">SSC</div>
+    <div class="chapter" onclick="openCategory('lekhpal')">Lekhpal</div>
+  `;
+}
+
+  window.openCategory = async function(category){
+
+  selectedCategory = category;
+
+  categorySection.style.display="none";
+  chapterSection.style.display="block";
+  questionSection.style.display="none";
+
   const snapshot = await getDocs(collection(db,"questions"));
+
   let chapters = new Set();
 
   snapshot.forEach(doc=>{
-    chapters.add(doc.data().chapter);
+    let data = doc.data();
+
+    if(data.category === category){
+      chapters.add(data.chapter);
+    }
   });
 
-  chapterList.innerHTML="";
+  chapterSection.innerHTML = "";
+
   chapters.forEach(ch=>{
-    chapterList.innerHTML += 
-      `<div class="chapter" onclick="loadQuestions('${ch}')">${ch}</div>`;
+    chapterSection.innerHTML += `
+      <div class="chapter" onclick="openChapter('${ch}')">
+        ${ch}
+      </div>
+    `;
   });
-}
+
+};
+
+window.openChapter = async function(chapter){
+
+  selectedChapter = chapter;
+
+  chapterSection.style.display="none";
+  questionSection.style.display="block";
+
+  const snapshot = await getDocs(collection(db,"questions"));
+
+  questionSection.innerHTML="";
+
+  snapshot.forEach(d=>{
+
+    let data = d.data();
+
+    if(data.category === selectedCategory && data.chapter === chapter){
+
+      questionSection.innerHTML += `
+      <div class="q-item">
+        <b>${data.question}</b>
+
+        <ul>
+          <li>${data.option1}</li>
+          <li>${data.option2}</li>
+          <li>${data.option3}</li>
+          <li>${data.option4}</li>
+        </ul>
+
+        <button onclick="editFullQuestion('${d.id}')">
+          Edit
+        </button>
+
+        <button onclick="deleteQuestion('${d.id}')">
+          Delete
+        </button>
+
+      </div>
+      <hr>
+      `;
+    }
+
+  });
+
+};
+
+
+
+window.editFullQuestion = async function(id){
+
+  const newQ = prompt("Edit Question:");
+  const op1 = prompt("Option 1:");
+  const op2 = prompt("Option 2:");
+  const op3 = prompt("Option 3:");
+  const op4 = prompt("Option 4:");
+  const ans = prompt("Correct answer index (0-3):");
+
+  if(newQ){
+
+    await updateDoc(doc(db,"questions",id),{
+      question:newQ,
+      option1:op1,
+      option2:op2,
+      option3:op3,
+      option4:op4,
+      answer:parseInt(ans)
+    });
+
+    openChapter(selectedChapter);
+  }
+
+};
+
+  
 
 /* LOAD QUESTIONS WITH OPTIONS */
 window.loadQuestions = async function(chapter){
