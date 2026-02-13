@@ -2086,6 +2086,15 @@ window.toggleChapter = function(chapter, el){
   home.style.display = "block";
 }
 
+
+    window.goHome = function(){
+  if(examRunning){
+    alert("❌ Exam chal raha hai, Home open nahi ho sakta");
+    return;
+  }
+  location.reload();
+}
+
 window.openAbout = function(){
   if(examRunning){
     alert("Exam ke dauran About open nahi ho sakta");
@@ -2497,6 +2506,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
