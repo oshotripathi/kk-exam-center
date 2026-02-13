@@ -2085,21 +2085,7 @@ function toggleDark(){
   );
 }
 
-function openRules(type){
-  selectedChapter = "";
-  selectedLekhpalChapter = "";
-  examType = type;
 
-  hideAll();
-
-  if(type === "ssc"){
-    chapterPage.style.display="block";
-    return;
-  }
-
-  examTitle.innerText = "SSC Exam";
-  rulePopup.style.display="flex";
-}
     
 window.onload = () => {
   if(localStorage.getItem("theme")==="dark"){
@@ -2444,6 +2430,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
