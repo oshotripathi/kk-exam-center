@@ -1879,6 +1879,39 @@ let selectedLekhpalChapter = "";
 
 
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCGqcunQhA9qXge7_nWZfIMWDQczs5OUBY",
+  authDomain: "kk-exam-center.firebaseapp.com",
+  projectId: "kk-exam-center",
+  storageBucket: "kk-exam-center.firebasestorage.app",
+  messagingSenderId: "960789555084",
+  appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadQuestions(chapterName){
+
+  const snapshot = await getDocs(collection(db,"questions"));
+
+  let questions = [];
+
+  snapshot.forEach(doc=>{
+    if(doc.data().chapter === chapterName){
+      questions.push(doc.data());
+    }
+  });
+
+  displayQuestions(questions);
+}
+
+
+
+    
 
 // QUESTIONS DATA (Admin controlled)
 let adminQuestions = JSON.parse(localStorage.getItem("questions")) || {
@@ -2424,6 +2457,7 @@ function filterResult(type){
 
 </body>
 </html>
+
 
 
 
