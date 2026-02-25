@@ -2,398 +2,320 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KK Admin Panel</title>
+<title>KK Advanced Admin Panel</title>
 
 <style>
 body{
   margin:0;
   font-family:Segoe UI;
-  background:#f4f6fb;
-  padding:20px;
+  display:flex;
+  height:100vh;
   transition:.3s;
 }
 body.dark{background:#121212;color:#fff;}
 
-.container{
-  max-width:900px;
-  margin:auto;
-}
-
-.card{
-  background:#fff;
+.sidebar{
+  width:230px;
+  background:#2c3e50;
+  color:white;
   padding:20px;
-  border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+.sidebar h2{margin-top:0;}
+.sidebar button{
+  width:100%;
+  margin:8px 0;
+  padding:10px;
+  border:none;
+  background:#34495e;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+.main{
+  flex:1;
+  padding:20px;
+  overflow:auto;
+}
+.card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
   margin-bottom:20px;
 }
 body.dark .card{background:#1e1e1e;}
 
 input,select{
   width:100%;
-  padding:12px;
-  margin:8px 0;
+  padding:10px;
+  margin:6px 0;
   border-radius:8px;
   border:1px solid #ccc;
 }
 
-button{
-  padding:10px 15px;
-  background:#2c3e50;
-  color:#fff;
+button.action{
+  padding:6px 10px;
+  margin-right:6px;
   border:none;
-  border-radius:8px;
-  cursor:pointer;
-  margin:5px 0;
-}
-
-.chapter{
-  padding:12px;
-  background:#ecf0f1;
-  margin:6px 0;
-  border-radius:8px;
+  border-radius:6px;
   cursor:pointer;
 }
-body.dark .chapter{background:#333;}
+.edit{background:orange;color:white;}
+.delete{background:red;color:white;}
+.addBtn{background:green;color:white;padding:10px;}
 
 .q-item{
-  background:#fafafa;
-  padding:10px;
-  margin:6px 0;
-  border-radius:6px;
+  padding:15px;
+  border-radius:10px;
+  background:#f5f5f5;
+  margin-bottom:12px;
 }
 body.dark .q-item{background:#2a2a2a;}
+
+.correct{
+  background:green;
+  color:white;
+  padding:3px 6px;
+  border-radius:5px;
+}
 
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
 }
 
-.toggle{
-  cursor:pointer;
+.modal{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,.5);
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
-
-.q-item{
-  padding:15px;
-  background:#f5f5f5;
-  margin-bottom:15px;
-  border-radius:10px;
+.modalContent{
+  background:white;
+  padding:20px;
+  width:400px;
+  border-radius:12px;
 }
-
-.q-item ul{
-  margin:10px 0;
-  padding-left:20px;
-}
-
-.correct{
-  background:green;
-  color:white;
-  font-weight:bold;
-  padding:3px 6px;
-  border-radius:5px;
-}
-
-  
+body.dark .modalContent{background:#1e1e1e;}
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="sidebar">
+<h2>KK Admin</h2>
+<button onclick="showDashboard()">Dashboard</button>
+<button onclick="showAdd()">Add Question</button>
+<button onclick="toggleDark()">🌙 Toggle</button>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="main">
+
+<div id="loginBox" class="card">
+<h3>Admin Login</h3>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="loginMsg"></p>
+</div>
+
+<div id="panel" style="display:none">
 
 <div class="topbar">
-  <h2>KK Admin Panel</h2>
-  <div>
-    <span class="toggle" onclick="toggleDark()">🌙</span>
-    <button onclick="logout()">Logout</button>
-  </div>
+<h2>Dashboard</h2>
+<input id="searchBox" placeholder="Search Question">
 </div>
 
-<!-- LOGIN -->
-<div class="card" id="loginBox">
-  <h3>Admin Login</h3>
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="loginMsg"></p>
+<div class="card">
+Total Questions: <b id="totalQ">0</b>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" style="display:none">
-      <div id="categorySection"></div>
-
-<div id="chapterSection" style="display:none;"></div>
-
-<div id="questionSection" style="display:none;"></div>
-  
-
-  
+<div id="questionList"></div>
 
 </div>
 
+<div id="addSection" style="display:none">
+<div class="card">
+<h3>Add Question</h3>
+<input id="newCategory" placeholder="Category">
+<input id="newChapter" placeholder="Chapter">
+<input id="newQ" placeholder="Question">
+<input id="newOp1" placeholder="Option 1">
+<input id="newOp2" placeholder="Option 2">
+<input id="newOp3" placeholder="Option 3">
+<input id="newOp4" placeholder="Option 4">
+<select id="newAns">
+<option value="0">Option 1</option>
+<option value="1">Option 2</option>
+<option value="2">Option 3</option>
+<option value="3">Option 4</option>
+</select>
+<button class="addBtn" onclick="addQuestion()">Add Question</button>
+</div>
+</div>
+
+</div>
+
+<div class="modal" id="editModal">
+<div class="modalContent">
+<h3>Edit Question</h3>
+<input id="editQ">
+<input id="editOp1">
+<input id="editOp2">
+<input id="editOp3">
+<input id="editOp4">
+<select id="editAns">
+<option value="0">Option 1</option>
+<option value="1">Option 2</option>
+<option value="2">Option 3</option>
+<option value="3">Option 4</option>
+</select>
+<button onclick="saveEdit()">Save</button>
+<button onclick="closeModal()">Cancel</button>
+</div>
 </div>
 
 <script type="module">
-let selectedCategory = "";
-let selectedChapter = "";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-  getFirestore, collection, getDocs, 
-  deleteDoc, doc, updateDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { 
-  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCGqcunQhA9qXge7_nWZfIMWDQczs5OUBY",
-  authDomain: "kk-exam-center.firebaseapp.com",
-  projectId: "kk-exam-center",
-  storageBucket: "kk-exam-center.firebasestorage.app",
-  messagingSenderId: "960789555084",
-  appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9",
-  measurementId: "G-YHTHGDR7Q2"
-};
+const firebaseConfig = { apiKey: "AIzaSyCGqcunQhA9qXge7_nWZfIMWDQczs5OUBY", authDomain: "kk-exam-center.firebaseapp.com", projectId: "kk-exam-center", storageBucket: "kk-exam-center.firebasestorage.app", messagingSenderId: "960789555084", appId: "1:960789555084:web:d4ed5391fdd95a9d4ad8a9", measurementId: "G-YHTHGDR7Q2" };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+let currentEditId=null;
+let allQuestions=[];
+
 /* LOGIN */
-window.login = async function(){
-  try{
-    await signInWithEmailAndPassword(auth,email.value,password.value);
-  }catch(e){
-    loginMsg.innerText="❌ Login Failed";
-  }
+window.login=async()=>{
+try{
+await signInWithEmailAndPassword(auth,email.value,password.value);
+}catch(e){loginMsg.innerText="Login Failed";}
 };
 
-/* AUTH CHECK */
 onAuthStateChanged(auth,(user)=>{
-  if(user){
-    loginBox.style.display="none";
-    dashboard.style.display="block";
-    loadCategories();
-  }else{
-    loginBox.style.display="block";
-    dashboard.style.display="none";
-  }
+if(user){
+loginBox.style.display="none";
+panel.style.display="block";
+listenQuestions();
+}else{
+loginBox.style.display="block";
+panel.style.display="none";
+}
 });
 
-/* LOGOUT */
-window.logout = async function(){
-  await signOut(auth);
-};
+window.logout=async()=>{await signOut(auth);};
 
-/* LOAD CHAPTERS */
-function loadCategories(){
-
-  categorySection.style.display="block";
-  chapterSection.style.display="none";
-  questionSection.style.display="none";
-
-  categorySection.innerHTML = `
-    <div class="chapter" onclick="openCategory('ssc')">SSC Maths</div>
-    <div class="chapter" onclick="openCategory('lekhpal')">SSC English</div>
-  `;
+function listenQuestions(){
+onSnapshot(collection(db,"questions"),(snapshot)=>{
+allQuestions=[];
+questionList.innerHTML="";
+snapshot.forEach(d=>{
+let data=d.data();
+data.id=d.id;
+allQuestions.push(data);
+});
+renderQuestions(allQuestions);
+totalQ.innerText=allQuestions.length;
+});
 }
 
-  window.openCategory = async function(category){
+function renderQuestions(data){
+questionList.innerHTML="";
+data.forEach(q=>{
+questionList.innerHTML+=`
+<div class="q-item">
+<b>${q.question}</b>
+<ul>
+<li class="${q.answer==0?'correct':''}">${q.option1}</li>
+<li class="${q.answer==1?'correct':''}">${q.option2}</li>
+<li class="${q.answer==2?'correct':''}">${q.option3}</li>
+<li class="${q.answer==3?'correct':''}">${q.option4}</li>
+</ul>
+<button class="action edit" onclick="openEdit('${q.id}')">Edit</button>
+<button class="action delete" onclick="removeQuestion('${q.id}')">Delete</button>
+</div>`;
+});
+}
 
-  selectedCategory = category;
+searchBox.addEventListener("input",()=>{
+let val=searchBox.value.toLowerCase();
+let filtered=allQuestions.filter(q=>q.question.toLowerCase().includes(val));
+renderQuestions(filtered);
+});
 
-  categorySection.style.display="none";
-  chapterSection.style.display="block";
-  questionSection.style.display="none";
-
-  const snapshot = await getDocs(collection(db,"questions"));
-
-  let chapters = new Set();
-
-  snapshot.forEach(doc=>{
-    let data = doc.data();
-
-    if(data.category === category){
-      chapters.add(data.chapter);
-    }
-  });
-
-  chapterSection.innerHTML = "";
-
-  chapters.forEach(ch=>{
-    chapterSection.innerHTML += `
-      <div class="chapter" onclick="openChapter('${ch}')">
-        ${ch}
-      </div>
-    `;
-  });
-
+window.addQuestion=async()=>{
+await addDoc(collection(db,"questions"),{
+category:newCategory.value,
+chapter:newChapter.value,
+question:newQ.value,
+option1:newOp1.value,
+option2:newOp2.value,
+option3:newOp3.value,
+option4:newOp4.value,
+answer:Number(newAns.value)
+});
+alert("Added!");
 };
 
-window.openChapter = async function(chapter){
-
-  selectedChapter = chapter;
-
-  chapterSection.style.display="none";
-  questionSection.style.display="block";
-
-  const snapshot = await getDocs(collection(db,"questions"));
-
-  questionSection.innerHTML="";
-
-  snapshot.forEach(d=>{
-
-    let data = d.data();
-
-    if(data.category === selectedCategory && data.chapter === chapter){
-
-      questionSection.innerHTML += `
-      <div class="q-item">
-        <b>${data.question}</b>
-
-        <ul>
-          <li>${data.option1}</li>
-          <li>${data.option2}</li>
-          <li>${data.option3}</li>
-          <li>${data.option4}</li>
-        </ul>
-
-        <button onclick="editFullQuestion('${d.id}')">
-          Edit
-        </button>
-
-        <button onclick="deleteQuestion('${d.id}')">
-          Delete
-        </button>
-
-      </div>
-      <hr>
-      `;
-    }
-
-  });
-
+window.removeQuestion=async(id)=>{
+if(confirm("Delete this question?")){
+await deleteDoc(doc(db,"questions",id));
+}
 };
 
-
-
-window.editFullQuestion = async function(id){
-
-  const newQ = prompt("Edit Question:");
-  const op1 = prompt("Option 1:");
-  const op2 = prompt("Option 2:");
-  const op3 = prompt("Option 3:");
-  const op4 = prompt("Option 4:");
-  const ans = prompt("Correct answer index (0-3):");
-
-  if(newQ){
-
-    await updateDoc(doc(db,"questions",id),{
-      question:newQ,
-      option1:op1,
-      option2:op2,
-      option3:op3,
-      option4:op4,
-      answer:parseInt(ans)
-    });
-
-    openChapter(selectedChapter);
-  }
-
+window.openEdit=(id)=>{
+let q=allQuestions.find(x=>x.id===id);
+currentEditId=id;
+editQ.value=q.question;
+editOp1.value=q.option1;
+editOp2.value=q.option2;
+editOp3.value=q.option3;
+editOp4.value=q.option4;
+editAns.value=q.answer;
+editModal.style.display="flex";
 };
 
-  
-
-/* LOAD QUESTIONS WITH OPTIONS */
-window.loadQuestions = async function(chapter){
-
-  selectedChapterTitle.innerText = chapter;
-
-  const snapshot = await getDocs(collection(db,"questions"));
-  questionList.innerHTML="";
-
-  snapshot.forEach(d=>{
-    let data = d.data();
-
-    if(data.chapter === chapter){
-
-      questionList.innerHTML += `
-      <div class="q-item">
-        <b>${data.question}</b>
-
-        <ul>
-          <li class="${data.answer===0?'correct':''}">${data.option1}</li>
-          <li class="${data.answer===1?'correct':''}">${data.option2}</li>
-          <li class="${data.answer===2?'correct':''}">${data.option3}</li>
-          <li class="${data.answer===3?'correct':''}">${data.option4}</li>
-        </ul>
-
-        <button onclick="editQuestion('${d.id}')">Edit</button>
-        <button onclick="deleteQuestion('${d.id}')">Delete</button>
-      </div>
-      <hr>
-      `;
-    }
-  });
+window.saveEdit=async()=>{
+await updateDoc(doc(db,"questions",currentEditId),{
+question:editQ.value,
+option1:editOp1.value,
+option2:editOp2.value,
+option3:editOp3.value,
+option4:editOp4.value,
+answer:Number(editAns.value)
+});
+editModal.style.display="none";
 };
 
-/* DELETE */
-window.deleteQuestion = async function(id){
-  await deleteDoc(doc(db,"questions",id));
-  loadQuestions(selectedChapterTitle.innerText);
+window.closeModal=()=>{editModal.style.display="none";};
+
+window.showAdd=()=>{
+panel.style.display="none";
+addSection.style.display="block";
 };
 
-/* EDIT */
-window.editQuestion = async function(id){
-
-  const snapshot = await getDocs(collection(db,"questions"));
-  let questionData = null;
-
-  snapshot.forEach(d=>{
-    if(d.id === id){
-      questionData = d.data();
-    }
-  });
-
-  if(!questionData) return;
-
-  let newQ = prompt("Edit Question:", questionData.question);
-  if(newQ === null) return;
-
-  let opt1 = prompt("Option 1:", questionData.option1);
-  if(opt1 === null) return;
-
-  let opt2 = prompt("Option 2:", questionData.option2);
-  if(opt2 === null) return;
-
-  let opt3 = prompt("Option 3:", questionData.option3);
-  if(opt3 === null) return;
-
-  let opt4 = prompt("Option 4:", questionData.option4);
-  if(opt4 === null) return;
-
-  let ans = prompt("Correct Answer Index (0-3):", questionData.answer);
-  if(ans === null) return;
-
-  await updateDoc(doc(db,"questions",id),{
-    question:newQ,
-    option1:opt1,
-    option2:opt2,
-    option3:opt3,
-    option4:opt4,
-    answer:Number(ans)
-  });
-
-  alert("✅ Updated Successfully");
-
-  loadQuestions(selectedChapterTitle.innerText);
+window.showDashboard=()=>{
+panel.style.display="block";
+addSection.style.display="none";
 };
-</script>
-<script>
-function toggleDark(){
-  document.body.classList.toggle("dark");
+
+window.toggleDark=()=>{
+document.body.classList.toggle("dark");
+localStorage.setItem("theme",document.body.classList.contains("dark")?"dark":"light");
+};
+
+if(localStorage.getItem("theme")=="dark"){
+document.body.classList.add("dark");
 }
 </script>
+
 </body>
 </html>
