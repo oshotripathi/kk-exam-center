@@ -125,11 +125,31 @@ body.dark .modalContent{background:#1e1e1e;}
 <div class="chapterTabs" id="chapterTabs"></div>
 
 <input id="searchBox" placeholder="Search in this chapter">
-
+<button onclick="showAddForm()" style="background:green;color:white;padding:8px 15px;border:none;border-radius:6px;margin:10px 0;">
++ Add Question
+</button>
 <div id="questionList"></div>
 
 <div class="pagination" id="pagination"></div>
+<div id="addForm" class="card" style="display:none;">
+<h3>Add Question</h3>
 
+<input id="newQ" placeholder="Question">
+<input id="newOp1" placeholder="Option 1">
+<input id="newOp2" placeholder="Option 2">
+<input id="newOp3" placeholder="Option 3">
+<input id="newOp4" placeholder="Option 4">
+
+<select id="newAns">
+<option value="0">Option 1</option>
+<option value="1">Option 2</option>
+<option value="2">Option 3</option>
+<option value="3">Option 4</option>
+</select>
+
+<button onclick="addQuestion()">Save Question</button>
+<button onclick="closeAddForm()">Cancel</button>
+</div>
 </div>
 
 </div>
@@ -202,7 +222,19 @@ loadCategories();
 });
 }
 
-  
+  window.showAddForm = function(){
+
+if(!selectedCategory || !selectedChapter){
+alert("Please select Category and Chapter first");
+return;
+}
+
+addForm.style.display="block";
+};
+
+window.closeAddForm = function(){
+addForm.style.display="none";
+};
 
 /* LOAD CATEGORIES */
 function loadCategories(){
@@ -221,6 +253,38 @@ if(cat === "ssc") return "SSC Maths";
 if(cat === "lekhpal") return "SSC English";
 return cat.toUpperCase();
 }
+
+
+
+
+  window.addQuestion = async function(){
+
+if(!selectedCategory || !selectedChapter){
+alert("Select category & chapter first");
+return;
+}
+
+await addDoc(collection(db,"questions"),{
+category:selectedCategory,
+chapter:selectedChapter,
+question:newQ.value,
+option1:newOp1.value,
+option2:newOp2.value,
+option3:newOp3.value,
+option4:newOp4.value,
+answer:Number(newAns.value)
+});
+
+alert("Question Added Successfully");
+
+addForm.style.display="none";
+
+newQ.value="";
+newOp1.value="";
+newOp2.value="";
+newOp3.value="";
+newOp4.value="";
+};
 
 /* OPEN CATEGORY */
 window.openCategory=function(cat){
