@@ -202,6 +202,8 @@ loadCategories();
 });
 }
 
+  
+
 /* LOAD CATEGORIES */
 function loadCategories(){
 let categories=[...new Set(allQuestions.map(q=>q.category))];
@@ -209,9 +211,15 @@ categoryList.innerHTML="";
 categories.forEach(cat=>{
 categoryList.innerHTML+=`
 <button onclick="openCategory('${cat}')">
-${cat.toUpperCase()}
+${getCategoryName(cat)}
 </button>`;
 });
+}
+
+  function getCategoryName(cat){
+if(cat === "ssc") return "SSC Maths";
+if(cat === "lekhpal") return "SSC English";
+return cat.toUpperCase();
 }
 
 /* OPEN CATEGORY */
