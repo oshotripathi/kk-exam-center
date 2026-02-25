@@ -96,10 +96,57 @@ width:400px;
 border-radius:12px;
 }
 body.dark .modalContent{background:#1e1e1e;}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px){
+
+body{
+flex-direction:column;
+}
+
+.sidebar{
+position:fixed;
+left:-260px;
+top:0;
+height:100%;
+z-index:1000;
+transition:.3s;
+}
+
+.sidebar.active{
+left:0;
+}
+
+.main{
+padding:15px;
+}
+
+.menuBtn{
+position:fixed;
+top:15px;
+left:15px;
+z-index:1100;
+background:#2c3e50;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.modalContent{
+width:90%;
+}
+
+}
+
+
+
+  
 </style>
 </head>
 <body>
-
+<button class="menuBtn" onclick="toggleMenu()">☰</button>
 <div class="sidebar">
 <h2>KK Admin</h2>
 <div id="categoryList"></div>
@@ -236,6 +283,12 @@ window.closeAddForm = function(){
 addForm.style.display="none";
 };
 
+
+window.toggleMenu = function(){
+document.querySelector(".sidebar").classList.toggle("active");
+};
+
+  
 /* LOAD CATEGORIES */
 function loadCategories(){
 let categories=[...new Set(allQuestions.map(q=>q.category))];
