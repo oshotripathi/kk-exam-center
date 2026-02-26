@@ -1769,7 +1769,7 @@ body.dark .about-section{
 </div>
 <div id="chapterPage" style="display:none;text-align:center">
 <h2>Select Maths Chapter</h2>
-<div class="home-box">
+<div class="home-box" id="sscChapters">
 <div class="exam-box" onclick="startChapter('percentage')">Percentage</div>
 <div class="exam-box" onclick="startChapter('ratio')">Ratio & Proportion</div>
 <div class="exam-box" onclick="startChapter('profitloss')">Profit & Loss</div>
@@ -2015,7 +2015,31 @@ window.openAdmin = function(){
 
 
 
+async function renderSSCChapters(){
 
+  const snapshot = await getDocs(collection(db,"questions"));
+  let chapterSet = new Set();
+
+  snapshot.forEach(doc=>{
+    let d = doc.data();
+    if(d.category === "ssc"){
+      chapterSet.add(d.chapter);
+    }
+  });
+
+  const box = document.getElementById("sscChapters");
+  box.innerHTML = "";
+
+  chapterSet.forEach(ch=>{
+    box.innerHTML += `
+      <div class="exam-box"
+           onclick="startChapter('${ch}')">
+        ${ch.toUpperCase()}
+      </div>
+    `;
+  });
+
+}
 
 
 
@@ -2043,16 +2067,6 @@ window.saveSettings = function(){
 
 
 
-window.onload = function(){
-
-  if(localStorage.getItem("admin") === "yes"){
-    document.getElementById("adminLogin").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-  }else{
-    document.getElementById("adminLogin").style.display = "flex";
-  }
-
-};
 
 
 
@@ -2092,6 +2106,13 @@ window.onbeforeunload = function () {
 };
 
 
+
+window.addEventListener("load", () => {
+  if(localStorage.getItem("theme")==="dark"){
+    document.body.classList.add("dark");
+  }
+});
+    
 
 /* ================= BASIC NAV ================= */
 window.toggleChapter = function(chapter, el){
@@ -2153,11 +2174,6 @@ window.toggleDark = function(){
 
 
     
-window.onload = () => {
-  if(localStorage.getItem("theme")==="dark"){
-    document.body.classList.add("dark");
-  }
-};
 
 /* ================= OPEN RULES ================= */
 window.openRules = function(type){
@@ -2167,9 +2183,10 @@ window.openRules = function(type){
 
   hideAll();
 
-  if(type === "ssc"){
-    chapterPage.style.display="block";
-    return;
+ if(type === "ssc"){
+  chapterPage.style.display="block";
+  renderSSCChapters();   // ⭐ ADD THIS
+  return;
   }
 
   examTitle.innerText = "SSC Exam";
@@ -2529,6 +2546,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
