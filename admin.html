@@ -188,7 +188,10 @@ width:90%;
 <div class="pagination" id="pagination"></div>
 <div id="addForm" class="card" style="display:none;">
 <h3>Add Question</h3>
-
+<select id="newLang">
+  <option value="hi">Hindi</option>
+  <option value="en">English</option>
+</select>
 <input id="newQ" placeholder="Question">
 <input id="newOp1" placeholder="Option 1">
 <input id="newOp2" placeholder="Option 2">
@@ -398,6 +401,7 @@ return;
 await addDoc(collection(db,"questions"),{
 category:selectedCategory,
 chapter:selectedChapter,
+language:newLang.value,
 question:newQ.value,
 option1:newOp1.value,
 option2:newOp2.value,
