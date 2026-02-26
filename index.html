@@ -2022,25 +2022,38 @@ async function renderSSCChapters(){
 
   snapshot.forEach(doc=>{
     let d = doc.data();
-    if(d.category === "ssc"){
+    if(d.category === "ssc" && !d.isChapterPlaceholder){
       chapterSet.add(d.chapter);
     }
   });
 
+  const colors = [
+    "linear-gradient(135deg,#ff512f,#dd2476)",
+    "linear-gradient(135deg,#36d1dc,#5b86e5)",
+    "linear-gradient(135deg,#11998e,#38ef7d)",
+    "linear-gradient(135deg,#f7971e,#ffd200)",
+    "linear-gradient(135deg,#8e2de2,#4a00e0)",
+    "linear-gradient(135deg,#00c6ff,#0072ff)",
+    "linear-gradient(135deg,#ff9966,#ff5e62)"
+  ];
+
   const box = document.getElementById("sscChapters");
   box.innerHTML = "";
+
+  let i = 0;
 
   chapterSet.forEach(ch=>{
     box.innerHTML += `
       <div class="exam-box"
+           style="background:${colors[i % colors.length]}"
            onclick="startChapter('${ch}')">
         ${ch.toUpperCase()}
       </div>
     `;
+    i++;
   });
 
 }
-
 
 
 
@@ -2546,6 +2559,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
