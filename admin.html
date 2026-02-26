@@ -374,7 +374,18 @@ alert("Chapter Created");
 
 };
 
-  
+  window.toggleMenu = function(){
+document.querySelector(".sidebar").classList.toggle("active");
+};
+
+
+  document.querySelectorAll(".sidebar button").forEach(btn=>{
+btn.addEventListener("click",()=>{
+if(window.innerWidth < 768){
+document.querySelector(".sidebar").classList.remove("active");
+}
+});
+});
 
 
   window.addQuestion = async function(){
