@@ -175,6 +175,14 @@ width:90%;
 <button onclick="showAddForm()" style="background:green;color:white;padding:8px 15px;border:none;border-radius:6px;margin:10px 0;">
 + Add Question
 </button>
+  
+<div id="chapterForm" class="card" style="display:none;">
+<h3>Add New Chapter</h3>
+<input id="newChapterName" placeholder="Chapter Name">
+<button onclick="addChapter()">Save</button>
+<button onclick="closeChapterForm()">Cancel</button>
+</div>
+  
 <div id="questionList"></div>
 
 <div class="pagination" id="pagination"></div>
@@ -309,6 +317,49 @@ return cat.toUpperCase();
 
 
 
+window.showAddChapter = function(){
+chapterForm.style.display = "block";
+};
+
+window.closeChapterForm = function(){
+chapterForm.style.display = "none";
+};
+
+window.addChapter = function(){
+
+if(!selectedCategory){
+alert("Select category first");
+return;
+}
+
+let ch = newChapterName.value;
+
+if(!ch){
+alert("Enter chapter name");
+return;
+}
+
+/* Chapter create karne ke liye dummy doc add karenge */
+addDoc(collection(db,"questions"),{
+category:selectedCategory,
+chapter:ch,
+question:"(Empty Chapter)",
+option1:"",
+option2:"",
+option3:"",
+option4:"",
+answer:0,
+isChapterPlaceholder:true
+});
+
+chapterForm.style.display="none";
+newChapterName.value="";
+alert("Chapter Created");
+
+};
+
+  
+
 
   window.addQuestion = async function(){
 
@@ -340,22 +391,51 @@ newOp4.value="";
 };
 
 /* OPEN CATEGORY */
-window.openCategory=function(cat){
-selectedCategory=cat;
-selectedChapter="";
-selectedTitle.innerText=cat.toUpperCase();
+window.openCategory = function(cat){
 
-let chapters=[...new Set(
-allQuestions.filter(q=>q.category===cat).map(q=>q.chapter)
+selectedCategory = cat;
+selectedChapter = "";
+selectedTitle.innerText = getCategoryName(cat);
+
+/* Reset UI */
+questionList.innerHTML = "";
+pagination.innerHTML = "";
+
+/* Add Chapter Button Top Pe */
+chapterTabs.innerHTML = `
+<button onclick="showAddChapter()" 
+style="background:green;color:white;margin-bottom:10px;">
++ Add Chapter
+</button>
+<hr>
+`;
+
+/* Unique Chapters Find */
+let chapters = [...new Set(
+allQuestions
+.filter(q => q.category === cat)
+.map(q => q.chapter)
 )];
 
-chapterTabs.innerHTML="";
-chapters.forEach(ch=>{
-chapterTabs.innerHTML+=`
-<button onclick="openChapter('${ch}')">${ch}</button>`;
+/* Render Chapter Buttons */
+chapters.forEach(ch => {
+
+chapterTabs.innerHTML += `
+<div style="display:inline-flex;align-items:center;margin:5px;">
+<button onclick="openChapter('${ch}')" 
+style="margin-right:5px;">
+${ch}
+</button>
+
+<button onclick="deleteChapter('${ch}')" 
+style="background:red;color:white;padding:5px 8px;border:none;border-radius:4px;">
+✕
+</button>
+</div>
+`;
+
 });
-questionList.innerHTML="";
-pagination.innerHTML="";
+
 };
 
 /* OPEN CHAPTER */
@@ -420,6 +500,23 @@ window.deleteQuestion=async(id)=>{
 if(confirm("Delete this question?")){
 await deleteDoc(doc(db,"questions",id));
 }
+};
+
+  window.deleteChapter = async function(ch){
+
+if(!confirm("Delete this chapter and all its questions?")) return;
+
+let toDelete = allQuestions.filter(q =>
+q.category === selectedCategory &&
+q.chapter === ch
+);
+
+for(let q of toDelete){
+await deleteDoc(doc(db,"questions",q.id));
+}
+
+alert("Chapter Deleted");
+
 };
 
 /* EDIT */
