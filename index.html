@@ -1640,7 +1640,42 @@ body.dark .about-section{
   color:#ffffff;
 }
     
+/* RESULT MESSAGE */
+.result-message{
+  text-align:center;
+  font-size:26px;
+  font-weight:800;
+  margin:20px 0;
+  animation:popIn 0.6s ease;
+}
 
+@keyframes popIn{
+  0%{transform:scale(0.6);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+/* Fireworks effect */
+.firework{
+  position:fixed;
+  font-size:30px;
+  animation:explode 1s ease forwards;
+}
+
+@keyframes explode{
+  0%{transform:translateY(0) scale(0.5);opacity:1;}
+  100%{transform:translateY(-200px) scale(1.5);opacity:0;}
+}
+
+/* Sad animation */
+.sad{
+  animation:shake 0.6s ease;
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-10px);}
+  75%{transform:translateX(10px);}
+}
 </style>
 </head>
 
@@ -2439,6 +2474,20 @@ window.renderPalette = function(){
   });
 }
 
+function launchFireworks(){
+  for(let i=0;i<20;i++){
+    let fw = document.createElement("div");
+    fw.className = "firework";
+    fw.innerText = "🎆";
+    fw.style.left = Math.random()*100+"vw";
+    fw.style.top = "60vh";
+    document.body.appendChild(fw);
+    setTimeout(()=>fw.remove(),1000);
+  }
+}
+
+
+    
 /* ================= RESULT ================= */
 function showResult(){
    localStorage.removeItem("examState");
@@ -2464,12 +2513,30 @@ function showResult(){
   const attempted = correct + wrong;
   const accuracy = attempted === 0 ? 0 : ((correct / attempted) * 100).toFixed(2);
   const percentScore = Math.max(0, ((score / totalMarks) * 100).toFixed(2));
+let message = "";
+let emoji = "";
+
+if(percentScore >= 75){
+  message = "🎉 Congratulations! Excellent Performance!";
+  emoji = "🎆";
+  launchFireworks();
+}
+else if(percentScore >= 40){
+  message = "👍 Good Job! Keep Improving!";
+  emoji = "😎";
+}
+else{
+  message = "😢 Better Luck Next Time!";
+  emoji = "💔";
+}
 
   let html = `
   <div class="result-wrap">
 
     <h2 class="result-title">📊 Exam Result</h2>
-
+       <div class="result-message ${percentScore<40?'sad':''}">
+  ${emoji} ${message}
+</div>
     <!-- SCORE -->
     <div class="score-card">
       <h1>${score.toFixed(2)} / ${totalMarks}</h1>
@@ -2559,6 +2626,7 @@ window.filterResult = function(type){
 
 </body>
 </html>
+
 
 
 
