@@ -262,7 +262,19 @@ panel.style.display="none";
 }
 });
 
-window.logout=async()=>{await signOut(auth);};
+window.logout = async () => {
+
+await signOut(auth);
+
+/* Clear Input Fields */
+email.value = "";
+password.value = "";
+
+/* Optional: remove saved autofill */
+email.setAttribute("autocomplete","off");
+password.setAttribute("autocomplete","new-password");
+
+};
 
 /* LIVE DATA */
 function listenQuestions(){
@@ -309,6 +321,10 @@ ${getCategoryName(cat)}
 });
 }
 
+
+
+
+  
   function getCategoryName(cat){
 if(cat === "ssc") return "SSC Maths";
 if(cat === "lekhpal") return "SSC English";
